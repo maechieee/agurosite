@@ -24,5 +24,12 @@ class Users(models.Model):
   email = models.EmailField(max_length=55, blank=True) # email VARCHAR(55) DEFAULT NULL
   username = models.CharField(max_length=55, blank=False, unique=True) # username VARCHAR(55) NOT NULL UNIQUE
   password = models.CharField(max_length=255, blank=False) # password VARCHAR(255) NOT NULL
+
+  profile_picture = models.ImageField(
+        upload_to='profile_pictures/',
+        null=True,
+        blank=True
+    )
+
   created_at = models.DateTimeField(auto_now_add=True) # created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   updated_at = models.DateTimeField(auto_now=True) # updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

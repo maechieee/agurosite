@@ -1,7 +1,12 @@
 setTimeout(() => {
-  const successToastMessage = document.getElementById('toast-success');
+  const toast = document.getElementById('toast-success');
 
-  if (successToastMessage) {
-    successToastMessage.style.display = 'none';
+  if (toast) {
+    toast.style.transition = 'opacity 0.5s ease';
+    toast.style.opacity = '0';
+
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 500);
   }
 }, 3000);

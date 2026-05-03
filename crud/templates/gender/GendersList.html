@@ -8,36 +8,76 @@ Genders List
 
 {% include "include/Sidebar.html" %}
 {% include "include/ToastMessage.html" %}
-<div class="p-2 sm:ml-64 mt-16 md:mt-14">
-  <div class="relative overflow-x-auto rounded-sm shadow-sm">
-    <table class="w-full">
-      
-      <thead class="text-xs text-left text-white bg-blue-600">
-        <tr>
-          <th class="px-6 py-3">Gender</th>
-          <th class="px-6 py-3">Action</th>
-        </tr>
-      </thead>
 
-      <tbody class="text-xs text-black">
-        {% for gender in genders %}
-          <tr class="hover:bg-gray-100 border-b border-gray-200">
-            <td class="px-6 py-3">{{ gender.gender }}</td>
-            <td class="px-6 py-3">
-              <div class="inline-flex shadow-sm">
-                <a href="/gender/edit/{{ gender.gender_id }}/" class="bg-green-600 px-3 py-2.5 font-medium text-white rounded-s-sm hover:bg-green-700 hover:outline-none">Edit    
+<div class="p-4 sm:ml-64 mt-16 md:mt-14 bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-5">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Gender Management</h1>
+        <p class="text-sm text-gray-500 mt-1">Manage gender categories.</p>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+
+        <thead class="bg-blue-600 text-white uppercase text-xs">
+          <tr>
+            <th class="px-6 py-4 text-left">Gender</th>
+            <th class="px-6 py-4 text-center">Action</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200 text-gray-700">
+
+          {% for gender in genders %}
+          <tr class="hover:bg-gray-50 transition">
+
+            <td class="px-6 py-4 font-medium">
+              {{ gender.gender }}
+            </td>
+
+            <td class="px-6 py-4">
+              <div class="flex justify-center gap-2">
+
+                <a href="/gender/edit/{{ gender.gender_id }}/"
+                   class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs font-medium transition">
+                  Edit
                 </a>
-                <a href="/gender/delete/{{ gender.gender_id }}/" class="bg-red-600 px-3 py-2.5 font-medium text-sm text-white rounded-e-sm hover:bg-red-700 hover:outline-none">Delete    
+
+                <a href="/gender/delete/{{ gender.gender_id }}/"
+                   class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-md text-xs font-medium transition">
+                  Delete
                 </a>
+
               </div>
             </td>
+
           </tr>
-        {% endfor %}
-      </tbody>
 
-    </table>
+          {% empty %}
+          <tr>
+            <td colspan="2" class="text-center py-10 text-gray-500">
+              No gender records found.
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+
+      </table>
+    </div>
+
   </div>
-</div>
 
+</div>
 
 {% endblock 'content' %}
