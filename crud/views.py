@@ -83,12 +83,28 @@ def delete_gender(request, genderId):
   
 def user_list(request):
     try:
-        query = request.GET.get('q') or ''
+        query = request.GET.get('q', '').strip()
+        usersObj = Users.objects.select_related('gender').all().order_by('full_name') #SELECT * FROM tbl_users ORDER BY full_name ASC;
 
-        usersObj = Users.objects.select_related('gender')
+        months = {
+          'january': 1, 'jan': 1,
+          'february': 2, 'feb': 2,
+          'march': 3, 'mar': 3,
+          'april': 4, 'apr': 4,
+          'may': 5,
+          'june': 6, 'jun': 6,
+          'july': 7, 'jul': 7,
+          'august': 8, 'aug': 8,
+          'september': 9, 'sep': 9,
+          'october': 10, 'oct': 10,
+          'november': 11, 'nov': 11,
+          'december': 12, 'dec': 12,
+        }
 
         if query:
-            usersObj = usersObj.filter(
+            query_lower = query.lower()
+
+            filters = (
                 Q(full_name__icontains=query) |
                 Q(username__icontains=query) |
                 Q(email__icontains=query) |
@@ -97,6 +113,11 @@ def user_list(request):
                 Q(birth_date__icontains=query) |
                 Q(gender__gender__iexact=query)
             )
+
+            if query_lower in months:
+              filters = filters | Q(birth_date__month=months[query_lower])
+
+            usersObj = usersObj.filter(filters)
         
         paginator = Paginator(usersObj, 15)
         page_number = request.GET.get('page')
@@ -126,12 +147,10 @@ def add_user(request):
       confirmPassword = request.POST.get('confirm_password') 
       profilePicture = request.FILES.get('profile_picture')
 
-      # ✅ REQUIRED FIELD VALIDATION (ADD HERE)
       if not fullName or not gender or not birthDate or not address or not contactNumber or not username or not password or not confirmPassword:
         messages.error(request, 'Please fill in all required fields.')
         return redirect('/user/add/')
 
-      # ✅ UNIQUE USERNAME VALIDATION (ADD HERE)
       if Users.objects.filter(username=username).exists():
         messages.error(request, 'Username already exists. Please choose another username.')
         return redirect('/user/add/')
@@ -140,17 +159,14 @@ def add_user(request):
         messages.error(request, 'Contact number must contain only numbers.')
         return redirect('/user/add/')
 
-      # required
       if not password or not confirmPassword:
         messages.error(request, 'Password is required!')
         return redirect('/user/add/')
 
-      # match
       if password != confirmPassword:
         messages.error(request, 'Password and Confirm Password does not match!')
         return redirect('/user/add/')
 
-      # ✅ SAVE USER
       Users.objects.create(
         full_name = fullName,
         gender = Genders.objects.get(pk=gender), 
@@ -192,12 +208,10 @@ def edit_user(request, userId):
       username = request.POST.get('username')
       profilePicture = request.FILES.get('profile_picture')
 
-      # Required fields validation
       if not fullName or not gender or not birthDate or not address or not contactNumber or not username:
         messages.error(request, 'Please fill in all required fields.')
         return redirect(f'/user/edit/{userId}/')
 
-      # Unique username validation
       if Users.objects.filter(username=username).exclude(pk=userId).exists():
         messages.error(request, 'Username already exists. Please choose another username.')
         return redirect(f'/user/edit/{userId}/')

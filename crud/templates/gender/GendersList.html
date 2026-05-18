@@ -1,66 +1,45 @@
 {% extends "layout/base.html" %}
 
-{% block 'title' %}
-Genders List
-{% endblock 'title' %}
+{% block 'title' %} Genders List {% endblock 'title' %}
 
 {% block 'content' %}
-
 {% include "include/Sidebar.html" %}
 {% include "include/ToastMessage.html" %}
 
-<div class="p-4 sm:ml-64 mt-16 md:mt-14 bg-gray-50 min-h-screen">
-
-  <!-- Header -->
+<div class="sm:ml-64 p-4 bg-gray-50">
   <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-5">
-    <div class="flex justify-between items-center">
-      <div>
-        <h1 class="text-2xl font-bold text-gray-800">Gender Management</h1>
-        <p class="text-sm text-gray-500 mt-1">Manage gender categories.</p>
-      </div>
-
-      
-    </div>
+    <h1 class="text-2xl font-bold text-gray-800">Gender Management</h1>
+    <p class="text-sm text-gray-500 mt-1">Manage gender categories.</p>
   </div>
 
-  <!-- Table Card -->
   <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
-
         <thead class="bg-blue-600 text-white uppercase text-xs">
           <tr>
             <th class="px-6 py-4 text-left">Gender</th>
             <th class="px-6 py-4 text-center">Action</th>
           </tr>
         </thead>
-
+        
         <tbody class="divide-y divide-gray-200 text-gray-700">
-
           {% for gender in genders %}
           <tr class="hover:bg-gray-50 transition">
-
             <td class="px-6 py-4 font-medium">
               {{ gender.gender }}
             </td>
-
             <td class="px-6 py-4">
               <div class="flex justify-center gap-2">
-
                 <a href="/gender/edit/{{ gender.gender_id }}/"
                    class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs font-medium transition">
                   Edit
                 </a>
-
                 <a href="/gender/delete/{{ gender.gender_id }}/"
                    class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-md text-xs font-medium transition">
                   Delete
                 </a>
-
               </div>
             </td>
-
           </tr>
 
           {% empty %}
@@ -72,12 +51,9 @@ Genders List
           {% endfor %}
 
         </tbody>
-
       </table>
     </div>
-
   </div>
-
 </div>
 
 {% endblock 'content' %}
